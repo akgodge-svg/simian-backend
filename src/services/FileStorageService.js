@@ -5,7 +5,9 @@ import crypto from 'crypto';
 import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
-const _dirname = path.dirname(_filename);
+
+const __dirname = path.dirname(__filename);
+
 const mkdir = promisify(fs.mkdir);
 const writeFile = promisify(fs.writeFile);
 const unlink = promisify(fs.unlink);
@@ -31,7 +33,9 @@ try {
 await mkdir(fullPath, { recursive: true });
 } catch (error) {
 if (error.code !== 'EEXIST') {
-console.error(Error creating directory ${fullPath}:, error);
+
+console.error(`Error creating directory ${fullPath}:`, error);
+
 throw error;
 }
 }
@@ -44,7 +48,10 @@ const random = crypto.randomBytes(6).toString('hex');
 const extension = path.extname(originalName);
 const baseName = path.basename(originalName, extension);
 const safeName = baseName.replace(/[^a-zA-Z0-9]/g, '_');
-return ${safeName}_${timestamp}_${random}${extension};
+
+
+return `${safeName}_${timestamp}_${random}${extension}`;
+
 }
 // Store candidate photo
 static async storeCandidatePhoto(courseNumber, fileBuffer, originalName) {
@@ -73,7 +80,7 @@ size: processedImage.length
 };
 } catch (error) {
 console.error('Error storing candidate photo:', error);
-throw new Error(Failed to store candidate photo: ${error.message});
+throw new Error(`Failed to store candidate photo: ${error.message}`);
 }
 }
 // Store course document
@@ -96,7 +103,8 @@ mimeType
 };
 } catch (error) {
 console.error('Error storing course document:', error);
-throw new Error(Failed to store course document: ${error.message});
+throw new Error(`Failed to store course document: ${error.message}`);
+
 }
 }
 // Store card/certificate image
@@ -129,7 +137,9 @@ size: processedImage.length
 };
 } catch (error) {
 console.error('Error storing card/certificate image:', error);
-throw new Error(Failed to store ${type} image: ${error.message});
+
+throw new Error(`Failed to store ${type} image: ${error.message}`);
+
 }
 }
 // Delete file
