@@ -120,9 +120,8 @@ user_name = ?)))))`;
  if (channel.channel_type === 'course') {
  // Check if user is instructor for this course
  const [instructorCheck] = await pool.execute(
- 'SELECT 1 FROM course_bookings cb JOIN instructors i ON (cb.actual_instructor_id = i.id OR
-cb.document_instructor_id = i.id) WHERE cb.id = ? AND i.user_name = ?',
- [channel.course_booking_id, userName]
+   `SELECT 1 FROM course_bookings cb JOIN instructors i ON (cb.actual_instructor_id = i.id OR cb.document_instructor_id = i.id) WHERE cb.id = ? AND i.user_name = ?`,
+   [channel.course_booking_id, userName]
  );
 
  if (instructorCheck.length > 0) return true;
