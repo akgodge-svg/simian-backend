@@ -1,4 +1,4 @@
-import { Center } from '../models/center.js';
+import { Center } from '../models/Center.js';
 export class CenterPermissionMiddleware {
 // Middleware to check center permissions
 static checkPermission(requiredPermission) {

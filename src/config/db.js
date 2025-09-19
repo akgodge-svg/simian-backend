@@ -19,7 +19,7 @@ export const connectToDatabase = async () => {
       database: process.env.DB_NAME,
       port: process.env.DB_PORT,
       waitForConnections: true,
-      connectionLimit: 10, // adjust as needed
+      connectionLimit: 10,
       queueLimit: 0,
       acquireTimeout: 60000,
        multipleStatements: true,
