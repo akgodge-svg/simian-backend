@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import inventoryRoutes from './routes/inventoryRoutes.js';
+import courseSettingsRoutes from './routes/courseSettings.routes.js';
+import centerRoutes from './routes/centerRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -17,7 +20,10 @@ app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 
 // -------------------- Routes --------------------
-
+// Add to API Routes section
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/course-settings', courseSettingsRoutes);
+app.use('/api/centers', centerRoutes);
 
 
 // -------------------- Start Server --------------------
