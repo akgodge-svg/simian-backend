@@ -68,6 +68,7 @@ app.use('/api/centers', centerRoutes);
 app.use('/api/instructors', instructorRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/lpo', lpoRoutes);
+
 app.use('/api/course-bookings', courseBookingRoutes);
 app.use('/api/course-booking-details', courseBookingDetailsRoutes);
 
