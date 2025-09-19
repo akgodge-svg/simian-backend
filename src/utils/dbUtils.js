@@ -1,11 +1,7 @@
 import { getDB } from "../config/db.js";
 
-
-
- 
-
 import bcrypt from "bcryptjs"
-export const createTables = async () => {
+export const connectToDatabase = async () => {
   const db = getDB();
   try{
     // Create course_categories table
@@ -113,8 +109,8 @@ export const createTables = async () => {
   `);
 
     // Complete Instructors table
-    await db.execute(`
-CREATE TABLE instructors (
+await db.execute(`
+CREATE TABLE IF NOT EXISTS instructors (
  id INT PRIMARY KEY AUTO_INCREMENT,
  name VARCHAR(255) NOT NULL,
  email VARCHAR(255) NOT NULL UNIQUE,
@@ -139,7 +135,7 @@ CREATE TABLE instructors (
 
 //-- Instructor qualifications (multiple categories per instructor)
 await db.execute(`
-CREATE TABLE instructor_qualifications (
+CREATE TABLE IF NOT EXISTS instructor_qualifications (
  id INT PRIMARY KEY AUTO_INCREMENT,
  instructor_id INT NOT NULL,
  category_id INT NOT NULL,
@@ -167,7 +163,7 @@ INDEX idx_instructor_id (instructor_id),
 
 //-- Instructor earnings per category (not level-wise)
 await db.execute(`
-CREATE TABLE instructor_earnings (
+CREATE TABLE IF NOT EXISTS instructor_earnings (
  id INT PRIMARY KEY AUTO_INCREMENT,
  instructor_id INT NOT NULL,
  category_id INT NOT NULL,
@@ -186,7 +182,7 @@ CREATE TABLE instructor_earnings (
 
 //-- Course assignments (booking restrictions)
 await db.execute(`
-CREATE TABLE course_assignments (
+CREATE TABLE IF NOT EXISTS  course_assignments (
  id INT PRIMARY KEY AUTO_INCREMENT,
  instructor_id INT NOT NULL,
  course_id INT NOT NULL DEFAULT 0,
@@ -208,7 +204,7 @@ CREATE TABLE course_assignments (
 `)
 //-- Instructor earnings history (payment tracking)
 await db.execute(`
-CREATE TABLE instructor_earnings_history (
+CREATE TABLE  IF NOT EXISTS instructor_earnings_history (
  id INT PRIMARY KEY AUTO_INCREMENT,
  instructor_id INT NOT NULL,
  course_id INT NOT NULL DEFAULT 0,
@@ -229,7 +225,7 @@ CREATE TABLE instructor_earnings_history (
 `)
 //-- Enhanced Documents table with multiple types per category
 await db.execute(`
-CREATE TABLE instructor_documents (
+CREATE TABLE IF NOT EXISTS instructor_documents (
  id INT PRIMARY KEY AUTO_INCREMENT,
  instructor_id INT NOT NULL,
  category_id INT NOT NULL,
@@ -261,7 +257,7 @@ CREATE TABLE instructor_documents (
 `);
 //-- Document expiry notifications
 await db.execute(`
-CREATE TABLE document_expiry_notifications (
+CREATE TABLE IF NOT EXISTS document_expiry_notifications (
  id INT PRIMARY KEY AUTO_INCREMENT,
  document_id INT NOT NULL,
  instructor_id INT NOT NULL,

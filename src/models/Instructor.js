@@ -5,7 +5,8 @@ import path from 'path';
 import fs from 'fs/promises';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import { getDB } from '../db.js';  
+import { getDB } from "../config/db.js";
+
 
 dotenv.config();
 

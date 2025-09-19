@@ -1,5 +1,7 @@
 // src/models/CourseCategory.js
-import pool from "../config/db.js";
+import { getDB } from "../config/db.js";
+
+
 
 export class CourseCategory {
   constructor(data = {}) {
