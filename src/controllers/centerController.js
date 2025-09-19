@@ -1,4 +1,4 @@
-import { CenterService } from '../services/centerService.js';
+import { CenterService } from '../services/CenterService.js';
 export class CenterController {
 // GET /api/centers
 static async getAllCenters(req, res) {

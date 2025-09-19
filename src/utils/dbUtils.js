@@ -1,6 +1,68 @@
 // src/services/db.setup.js
 import { getDB } from "../config/db.js";
 
+<<<<<<< HEAD
+import bcrypt from "bcryptjs"
+export const connectToDatabase = async () => {
+  const db = getDB();
+  try{
+   // -- Create inventory_items table
+await db.execute(`
+  CREATE TABLE IF NOT EXISTS inventory_items (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ item_type ENUM('card', 'certificate') NOT NULL,
+ category_id INT NOT NULL,
+ level_id INT NOT NULL,
+ item_name VARCHAR(255) NOT NULL,
+ current_stock INT DEFAULT 0,
+ minimum_threshold INT DEFAULT 10,
+ is_active BOOLEAN DEFAULT 1,
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ FOREIGN KEY (category_id) REFERENCES course_categories(id),
+ FOREIGN KEY (level_id) REFERENCES course_category_levels(id),
+ UNIQUE KEY unique_inventory_item (item_type, category_id, level_id),
+ INDEX idx_item_type (item_type),
+ INDEX idx_category_level (category_id, level_id),
+ INDEX idx_current_stock (current_stock),
+ INDEX idx_is_active (is_active)
+);
+`);
+    //-- Create inventory_transactions table
+await db.execute(`CREATE TABLE IF NOT EXISTS inventory_transactions (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ inventory_item_id INT NOT NULL,
+ transaction_type ENUM('add', 'deduct') NOT NULL,
+ quantity INT NOT NULL,
+ previous_stock INT NOT NULL,
+ new_stock INT NOT NULL,
+ reference_type ENUM('manual', 'card_printed', 'certificate_printed') NOT NULL,
+ reference_id INT NULL COMMENT 'candidate_id for printed items, NULL for manual',
+ notes TEXT NULL,
+ created_by_user VARCHAR(100) NOT NULL,
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id) ON DELETE CASCADE,
+ INDEX idx_inventory_item_id (inventory_item_id),
+ INDEX idx_transaction_type (transaction_type),
+ INDEX idx_reference_type (reference_type),
+ INDEX idx_created_at (created_at)
+);`);
+//-- Create triggers for auto-deduction when print status changes
+//
+    
+//-- Trigger for card printing
+await db.execute(`
+   DELIMITER $$
+-- Trigger for card printing
+CREATE TRIGGER auto_deduct_card_inventory
+AFTER UPDATE ON candidate_cards
+FOR EACH ROW
+BEGIN
+ DECLARE v_category_id INT;
+ DECLARE v_level_id INT;
+ DECLARE v_inventory_item_id INT;
+ DECLARE v_current_stock INT;
+=======
 import bcrypt from "bcryptjs";
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
@@ -663,6 +725,7 @@ await db.execute(`
         DECLARE v_level_id INT;
         DECLARE v_inventory_item_id INT;
         DECLARE v_current_stock INT;
+>>>>>>> aa212385cd4a76aa7c16b2b7f1b45ea461be5593
 
         -- Only trigger when print_status changes from 'not_printed' to 'printed'
         IF OLD.print_status = 'not_printed' AND NEW.print_status = 'printed' THEN
@@ -798,6 +861,14 @@ await db.execute(`
       WHERE cc.is_active = 1 AND ccl.is_active = 1;
     `);
 
+<<<<<<< HEAD
+  console.log("Table is created or already exists");
+} catch (err) {
+  console.error("Error creating tables:", err.message);
+  process.exit(1);
+}
+}
+=======
     // -- =====================================================
     // -- INTEGRATED CHAT SYSTEM WITH PUSHER SETTINGS
     // -- =====================================================
@@ -1337,3 +1408,4 @@ INSERT IGNORE INTO field_definitions
 
 }
 
+>>>>>>> aa212385cd4a76aa7c16b2b7f1b45ea461be5593

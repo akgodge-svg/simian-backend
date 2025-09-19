@@ -1,8 +1,22 @@
+
+// index.js (or server.js)
+
 // src/index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+
+
+
+// ✅ Route imports
+import inventoryRoutes from "./src/routes/inventoryRoutes.js";
+import courseSettingsRoutes from "./src/routes/courseSettingsRoutes.js";
+import centerRoutes from "./src/routes/centerRoutes.js";
+import instructorRoutes from "./src/routes/instructorRoutes.js";
+
+// ✅ Database helpers – adjust the path to match your project
+import { connectToDatabase } from "./src/config/db.js";
 
 // center code 
 
@@ -30,7 +44,9 @@ import { CourseBooking } from './models/CourseBooking.js';
 import courseBookingRoutes from './routes/courseBookingRoutes.js';
 
 
+
 dotenv.config();
+
 const app = express();
 
 // Routes (default imports — route files should `export default router`)
@@ -56,7 +72,9 @@ import { connectToDatabase } from "./src/config/db.js";
 
 app.use(
   cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173", // React frontend
+
     credentials: true,
   })
 );
@@ -250,6 +268,14 @@ const startServer = async () => {
   try {
 
 
+    // ✅ Ensure database connection and table creation
+    await connectToDatabase();
+   
+    
+
+    // 1) connect to DB
+
+
     const courseDbConnected = await CourseCategory.testConnection();
 const centerDbConnected = await Center.testConnection();
 const customerDbConnected = await Customer.testConnection();
@@ -258,6 +284,7 @@ if (!courseDbConnected || !centerDbConnected || !customerDbConnected || !lpoDbCo
 console.error('❌ Cannot start server - database connection failed');
 process.exit(1);
 }
+
 
     await connectToDatabase();
 
@@ -276,8 +303,9 @@ process.exit(1);
     }
 
     // 4) start the http server
+
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`✅ Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Error starting server:", error.message || error);

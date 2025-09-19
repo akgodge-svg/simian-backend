@@ -1,4 +1,4 @@
-import { Center } from '../models/center.js';
+import { Center } from '../models/Center.js';
 export class CenterService {
 // Get all centers with statistics
 static async getAllCenters() {
